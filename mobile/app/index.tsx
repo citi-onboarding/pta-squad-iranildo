@@ -1,13 +1,29 @@
 import { View, Text, SafeAreaView, Dimensions, ScrollView } from "react-native";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Card from "../src/components/Card";
 import LogoCiti from "../src/assets/logoCiti.svg"
 import Sol from "../src/assets/sol.svg"
 import Nuvem from "../src/assets/nuvem.svg"
 import Lua from "../src/assets/lua.svg"
+import { getConsultas } from "../src/services/Consulta";
+
+interface ConsultaData {
+  id: string,
+  tipoConsulta: string,
+  medicoResponsavel: string,
+  data: string,
+  hora: string,
+  paciente: PetData
+}
+
+interface PetData{
+  id: string,
+  nome: string,
+  nomeTutor: string,
+  especie: string
+}
 
 const { width } = Dimensions.get("window")
-
 
 const appointments = [
   { id: 1, date: "18/02", time: "13:00", dono: "João Alves", medico: "Dr. José Carlos", pet: "Luna", tag: "Primeira Consulta", backgroundColor: "#bfb5ff" },
@@ -17,6 +33,17 @@ const appointments = [
 
 const App: React.FC = () => {
   const [filter, setFilter] = useState<string | null>(null);
+  const[consulta, setConsulta] = useState<ConsultaData[]>([]);
+
+  useEffect(()=>{
+    async function getData(){
+      const resp = await getConsultas();
+      console.log(resp)
+      setConsulta(resp)
+    }
+
+    getData()
+  })
 
   const filteredAppointments = appointments.filter((appointment) => {
     if (filter === "Sol") return parseInt(appointment.time.split(":")[0]) < 12; 
@@ -45,16 +72,16 @@ const App: React.FC = () => {
           </View>
         </View>
         <View className="px-2 mt-4">
-          {filteredAppointments.map((appointment) => (
+          {consulta.map((appointment, index) => (
             <Card
-              key={appointment.id}
-              date={appointment.date}
-              time={appointment.time}
-              dono={appointment.dono}
-              medico={appointment.medico}
-              pet={appointment.pet}
-              tag={appointment.tag}
-              backgroundColor={appointment.backgroundColor}
+              key={index}
+              date={appointment.data}
+              time={appointment.hora}
+              dono={appointment.paciente.nomeTutor}
+              medico={appointment.medicoResponsavel}
+              pet={appointment.paciente.nome}
+              tag={appointment.tipoConsulta}
+              backgroundColor="#bfb5ff"
             />
           ))}
         </View>
