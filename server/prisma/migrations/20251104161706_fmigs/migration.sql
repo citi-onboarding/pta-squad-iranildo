@@ -19,24 +19,24 @@ CREATE TABLE "Test" (
 
 -- CreateTable
 CREATE TABLE "Pet" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "nome" TEXT NOT NULL,
     "nomeTutor" TEXT NOT NULL,
     "especie" TEXT NOT NULL,
-    "idade" INTEGER NOT NULL,
+    "idade" TEXT NOT NULL,
 
     CONSTRAINT "Pet_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Consulta" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "tipoConsulta" TEXT NOT NULL,
-    "medicoResponsel" TEXT NOT NULL,
+    "medicoResponsavel" TEXT NOT NULL,
     "data" TEXT NOT NULL,
     "hora" TEXT NOT NULL,
-    "descricaoProblema" TEXT NOT NULL,
-    "pacienteID" INTEGER,
+    "descricaoProblema" TEXT,
+    "pacienteID" TEXT,
 
     CONSTRAINT "Consulta_pkey" PRIMARY KEY ("id")
 );
