@@ -63,6 +63,7 @@ export default class Citi<Entity extends ModelNames> {
   async insertIntoDatabase<T extends ModelCreateInput[Entity]>(
     object: T
   ): Promise<InsertableDatabase<Models[Entity]>> {
+    delete object.id
     try {
       const retorno = await prisma[
         this.entity.toLowerCase() as Uncapitalize<Prisma.ModelName>
